@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Module 3: Applying/exploiting Large Language Models
 
 This week we will be learning about how to benchmark and evaluate LLMs with principled software engineering techniques while learning about the complexities of distributed systems.
