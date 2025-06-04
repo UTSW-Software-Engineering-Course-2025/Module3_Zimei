@@ -1,0 +1,33 @@
+repos:
+  # 1:  Sort imports first (so Black formats the result)
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1
+    hooks:
+      - id: isort
+        # run only on staged Python files
+        files: \.py$
+        # tell isort to respect your pyproject settings
+        additional_dependencies: []
+
+  # 2: Format
+  - repo: https://github.com/psf/black
+    rev:  24.4.2        # pin!  (check latest tag)
+    hooks:
+      - id: black
+        language_version: python3.11    # match your runtime
+
+  # 3:  Lint for style / simple bugs
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.2.0
+    hooks:
+      - id: flake8
+
+  # 4: Static type checks (runs last; formatting doesn't affect it)
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        # rely on pyproject for flags; add requirements if needed
+        additional_dependencies: ["pydantic>=1.10"]# e.g. ["pydantic"] if plugins need runtime deps
+        # Optional args; leave blank if using pyproject.toml
+        # args: ["--strict"]

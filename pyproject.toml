@@ -1,20 +1,28 @@
 [project]
 name = "module-3-materials"
 description = "Benchmarking and evaluating LLMs with principled software engineering techniques. Re-implementation of the GeneGPT paper."
-authors = ["Your Name <your.email@example.com>"]
-requires-python = ">=3.12"
+authors = ["Zimei Chen <zmc_life@outlook.com>"]
+requires-python = ">=3.11"
 
 [tool.black]
 line-length = 88
-skip-string-normalization = false
+target-version = ["py311"]
 
 [tool.isort]
-profile = "black"
+profile = "black"                   # makes isort + Black play nicely
+line_length = 88
+
+[tool.flake8]
+max-line-length = 88                # stay consistent
+extend-ignore = ["E203", "W503"]    # also matches Black's opinions
+per-file-ignores = [
+  "__init__.py:F401",               # silence 'unused import' in package inits
+]
 
 [tool.mypy]
-python_version = "3.12"
-ignore_missing_imports = true
-strict = true
-show_error_codes = true
-pretty = true
-
+python_version = "3.11"
+strict = true                       # OR choose some flags
+plugins = [
+  "pydantic.mypy",                  # example: extra plugin support
+]
+ignore_missing_imports = true       # keep CI green while you iterate

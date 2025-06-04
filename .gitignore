@@ -89,6 +89,7 @@ target/
 profile_default/
 ipython_config.py
 
+m4/
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
 #   intended to run in multiple environments; otherwise, check them in:
@@ -186,3 +187,17 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+*.env
+
+# mlruns
+#  mlflow stores experiment runs in the mlruns directory, which can be large and is not
+#  necessary to track in version control. It is recommended to add this directory to .gitignore.
+day1/mlruns/
+day2/mlruns/
+day3/mlruns/
+
+*.sbatch
+*.json
+*.txt
+*.tpl
