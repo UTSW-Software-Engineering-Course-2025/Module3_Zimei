@@ -354,7 +354,7 @@ def evaluate_dataset(
 ) -> tuple[List[Result], float, dict[str, float], float]:  # Updated return type
     results = []
     for index, data_row in tqdm(
-        dataset[315:364].iterrows(), desc="Processing Rows", total=len(dataset[315:364])
+        dataset.iterrows(), desc="Processing Rows", total=len(dataset)
     ):
         try:
             # Assuming `query_model` is defined in a previous cell
