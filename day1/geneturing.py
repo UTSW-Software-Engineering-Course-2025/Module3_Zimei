@@ -290,11 +290,10 @@ def get_answer(answer: str, task: str) -> str:
         return answer.split(", ")
 
     elif task == "Protein-coding genes":
-        if answer == "yes" or "Yes":
+        if answer == "yes" or answer == "Yes":
             answer = "TRUE"
-        elif answer=="no" or "No":
+        elif answer == "no" or answer == "No":
             answer = "NA"
-
         return answer.upper()
 
     elif task == "Multi-species DNA aligment":
@@ -355,7 +354,7 @@ def evaluate_dataset(
 ) -> tuple[List[Result], float, dict[str, float], float]:  # Updated return type
     results = []
     for index, data_row in tqdm(
-        dataset.iterrows(), desc="Processing Rows", total=len(dataset)
+        dataset[315:364].iterrows(), desc="Processing Rows", total=len(dataset[315:364])
     ):
         try:
             # Assuming `query_model` is defined in a previous cell
@@ -374,6 +373,7 @@ def evaluate_dataset(
             s = get_score(
                 processed_answer_from_model, data_row["answer"], data_row["task"]
             )
+            print(data_row["task"],data_row["answer"],response_from_model,processed_answer_from_model)
             results.append(
                 Result(
                     id=index,
@@ -452,9 +452,13 @@ def plot_scores_by_task(
     plt.savefig(imag_path)
     plt.show()
 
-
-# In[46]:
-# 6.3 Save the results
+# results, successful_predictions = evaluate_dataset(
+#     dataset, system_message, client, example_messages
+# )
+# save_results(results, RESULT_FILE)
+# task_scores, overall_score = score_per_task_all(results)
+# # In[46]:
+# # 6.3 Save the results
 with mlflow.start_run(run_name="gene_turing_run"):
     # Log basic config
     mlflow.log_param("deployment_name", api_deployment)

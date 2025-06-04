@@ -28,11 +28,10 @@ def get_answer(answer: str, task: str) -> str:
         return answer.split(", ")
 
     elif task == "Protein-coding genes":
-        if answer == "yes" or "Yes":
+        if answer == "yes" or answer == "Yes":
             answer = "TRUE"
-        elif answer=="no" or "No":
+        elif answer == "no" or answer == "No":
             answer = "NA"
-
         return answer.upper()
 
     elif task == "Multi-species DNA aligment":
@@ -51,8 +50,8 @@ def test_get_answer():
     assert get_answer("chromosome 2", "Gene location") == "chr2"
     assert get_answer("Caenorhabditis elegans", "Multi-species DNA alignment") == "worm"
     assert get_answer("Homo sapiens", "Multi-species DNA alignment") == "human"
-    assert get_answer("Yes", "Protein-coding genes") == "TRUE"  # Updated to match expected output
-    assert get_answer("No", "Protein-coding genes") == "NA"    # Updated to match expected output
+    assert get_answer("Yes", "Protein-coding genes") == "TRUE"  
+    assert get_answer("No", "Protein-coding genes") == "NA"   
     assert get_answer("gene1, gene2", "Gene disease association") == ["gene1", "gene2"]
     assert get_answer("location1, location2", "Disease gene location") == [
         "location1",
