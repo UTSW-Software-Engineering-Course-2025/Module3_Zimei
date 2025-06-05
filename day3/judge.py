@@ -27,7 +27,7 @@ api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
 api_version = os.getenv("AZURE_OPENAI_API_VERSION")
 api_deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
-DATASET = "genehop"
+DATASET = "geneturing"
 
 DATASET_FILE = f"{DATASET}_results.json"
 # set up the client
@@ -84,16 +84,6 @@ Explanation: [Your Justification]
     except Exception as e:
         return f"An error occurred during evaluation: {e}"
 
-def score_per_task_all(results):
-    task_scores = defaultdict(list)
-    for result in results:
-        if result.success:
-            task_scores[result.task].append(result.score)
-    for task, scores in task_scores.items():
-        task_scores[task] = sum(scores) / len(scores) if scores else 0
-    all_scores = [result.score for result in results if result.success]
-    overall_score = sum(all_scores) / len(all_scores) if all_scores else 0.0
-    return task_scores,overall_score
 
 
 def plot_scores_by_task(
@@ -117,27 +107,27 @@ def plot_scores_by_task(
     plt.savefig(imag_path)
     plt.show()
 
-# def calculate_evaluation(results_df):
-#     """
-#     Calculates the average score for each task and the overall average score.
+def calculate_evaluation(results_df):
+    """
+    Calculates the average score for each task and the overall average score.
 
-#     Args:
-#         results_df: A pandas DataFrame containing a 'task' and a'evaluation' column.
+    Args:
+        results_df: A pandas DataFrame containing a 'task' and a'evaluation' column.
 
-#     Returns:
-#         A tuple containing:
-#         - task_scores (dict): Average score for each task.
-#         - overall_score (float): Average score across all entries.
-#     """
-#     results_df['evaluation'] = pd.to_numeric(results_df['evaluation'], errors='coerce')
+    Returns:
+        A tuple containing:
+        - task_scores (dict): Average score for each task.
+        - overall_score (float): Average score across all entries.
+    """
+    results_df['score'] = pd.to_numeric(results_df['score'], errors='coerce')
     
-#     # Drop rows where score could not be parsed
-#     results_df.dropna(subset=['evaluation'], inplace=True)
+    # Drop rows where score could not be parsed
+    results_df.dropna(subset=['score'], inplace=True)
 
-#     task_scores = results_df.groupby('task')['evaluation'].mean().to_dict()
-#     overall_score = results_df['evaluation'].mean()
+    task_scores = results_df.groupby('task')['score'].mean().to_dict()
+    overall_score = results_df['score'].mean()
     
-#     return task_scores, overall_score
+    return task_scores, overall_score
 
 # --- Main Execution ---
 if __name__ == "__main__":
@@ -175,7 +165,7 @@ if __name__ == "__main__":
 
 
     # Start MLflow run
-    with mlflow.start_run(run_name="llm_judge"):
+    with mlflow.start_run(run_name="llm_judge_turing"):
         evaluations = []
         scores = []
         print(f"Starting evaluation of {len(results_df)} predictions from '{DATASET_FILE}'...")
@@ -206,7 +196,7 @@ if __name__ == "__main__":
         print(f"Evaluations successfully saved to '{output_file}'")
 
         # --- Calculate and Plot Scores ---
-        task_scores, overall_score = score_per_task_all(results_df)
+        task_scores, overall_score = calculate_evaluation(results_df)
         imag_path =f"{DATASET}_scores_by_task_llm_judge.png"
         plot_scores_by_task(task_scores, overall_score,imag_path )
         mlflow.log_artifact(imag_path)

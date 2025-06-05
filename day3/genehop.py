@@ -616,7 +616,7 @@ def plot_scores_by_task(
 # save_results(results, RESULT_FILE)
 # task_scores, overall_score = score_per_task_all(results)
 
-with mlflow.start_run(run_name="gene_hop_run"):
+with mlflow.start_run(run_name="gene_hop_run_with_blast_Eutils"):
     # Log basic config
     mlflow.log_param("deployment_name", api_deployment)
     mlflow.log_param("version", api_version)
