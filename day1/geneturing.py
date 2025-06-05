@@ -53,7 +53,7 @@ api_deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
 
 # 2.3 Evaluation and Logging Configuration
-RESULT_FILE = f"{DATASET}_results.csv"
+RESULT_FILE = f"{DATASET}_results.json"
 mlflow.set_experiment("s440797-Zimei")
 
 # ## 3. Data Loading
@@ -331,10 +331,10 @@ class Result:
     success: bool
 
 
-def save_results(results: List[Result], results_csv_filename: str) -> None:
-    """Save the results to a CSV file."""
+def save_results(results: List[Result], results_filename: str) -> None:
+    """Save the results to a json file."""
     df = pd.DataFrame([result.__dict__ for result in results])
-    df.to_csv(results_csv_filename, index=False)
+    df.to_json(results_filename, orient="records", lines=True, force_ascii=False)
 
 
 # In[36]:
